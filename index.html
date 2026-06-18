@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APEX Sim Racing Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --naranja: #E84D00;
+      --naranja-claro: #FF6B2B;
+      --negro: #0A0A0A;
+      --gris-oscuro: #141414;
+      --gris-medio: #1E1E1E;
+      --gris-borde: #2A2A2A;
+      --blanco: #FFFFFF;
+      --blanco-70: rgba(255,255,255,0.7);
+      --blanco-30: rgba(255,255,255,0.3);
+      --display: 'Barlow Condensed', sans-serif;
+      --body: 'Barlow', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--negro);
+      color: var(--blanco);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── NAVBAR ───────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gris-borde);
+    }
+
+    .nav-logo {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blanco-70);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--blanco); }
+
+    .nav-cta {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--naranja);
+      color: var(--blanco);
+      padding: 10px 22px;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover { background: var(--naranja-claro); }
+
+    /* ─── HERO ─────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 48px 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('hero-bg.png');
+      background-size: cover;
+      background-position: center 30%;
+      filter: brightness(0.55);
+    }
+
+    /* línea diagonal decorativa naranja */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        transparent 55%,
+        rgba(232,77,0,0.18) 100%
+      );
+    }
+
+    .hero-tag {
+      position: relative;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--naranja);
+      margin-bottom: 16px;
+    }
+
+    .hero-headline {
+      position: relative;
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(52px, 8vw, 110px);
+      line-height: 0.92;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      max-width: 780px;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--naranja);
+    }
+
+    .hero-sub {
+      position: relative;
+      margin-top: 28px;
+      font-size: 15px;
+      color: var(--blanco-70);
+      max-width: 440px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      position: relative;
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .btn-primary {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--naranja);
+      color: var(--blanco);
+      padding: 14px 28px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:hover {
+      background: var(--naranja-claro);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blanco-70);
+      border-bottom: 1px solid var(--blanco-30);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-ghost:hover {
+      color: var(--blanco);
+      border-color: var(--blanco);
+    }
+
+    .hero-badge {
+      position: absolute;
+      right: 48px;
+      bottom: 80px;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--blanco-30);
+      writing-mode: vertical-rl;
+    }
+
+    /* ─── SPONSORS ─────────────────────────────────────────── */
+    .sponsors {
+      background: var(--blanco);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      gap: 56px;
+    }
+
+    .sponsors-label {
+      font-family: var(--display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #999;
+      white-space: nowrap;
+    }
+
+    .sponsors-logos {
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .sponsor-name {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+      color: #111;
+    }
+
+    .sponsor-name.heineken { color: #007A33; }
+    .sponsor-name.shell { color: #E4231A; }
+    .sponsor-name.santander { color: #EC0000; }
+
+    /* ─── SECCIÓN ABOUT ────────────────────────────────────── */
+    .about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--negro);
+      padding: 100px 48px;
+      align-items: center;
+    }
+
+    .about-text { padding-right: 64px; }
+
+    .section-eyebrow {
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--naranja);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--naranja);
+    }
+
+    .section-title {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: clamp(36px, 4vw, 56px);
+      line-height: 1;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    .about-body {
+      color: var(--blanco-70);
+      font-size: 15px;
+      line-height: 1.75;
+      margin-bottom: 48px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 40px;
+    }
+
+    .stat-num {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 42px;
+      color: var(--naranja);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blanco-30);
+      margin-top: 4px;
+    }
+
+    .about-image {
+      position: relative;
+    }
+
+    .about-image img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+    }
+
+    /* borde naranja decorativo */
+    .about-image::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      right: -12px;
+      width: 60%;
+      height: 60%;
+      border-top: 2px solid var(--naranja);
+      border-right: 2px solid var(--naranja);
+      z-index: 1;
+    }
+
+    /* ─── TRES PILARES ─────────────────────────────────────── */
+    .pilares {
+      background: var(--gris-oscuro);
+      padding: 100px 48px;
+    }
+
+    .pilares-header {
+      margin-bottom: 56px;
+    }
+
+    .pilares-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      position: relative;
+    }
+
+    .pilar {
+      background: var(--gris-medio);
+      padding: 48px 36px;
+      cursor: pointer;
+      transition: all 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      opacity: 0.45;
+      border: 1px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pilar::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--naranja);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .pilar.active {
+      opacity: 1;
+      background: var(--negro);
+      border-color: var(--gris-borde);
+      transform: scale(1.03);
+      z-index: 2;
+      box-shadow: 0 0 40px rgba(232,77,0,0.15);
+    }
+
+    .pilar.active::before {
+      transform: scaleX(1);
+    }
+
+    .pilar:hover:not(.active) {
+      opacity: 0.7;
+    }
+
+    .pilar-num {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 72px;
+      line-height: 1;
+      color: var(--gris-borde);
+      margin-bottom: 16px;
+      transition: color 0.4s;
+    }
+
+    .pilar.active .pilar-num {
+      color: var(--naranja);
+    }
+
+    .pilar-title {
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 26px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .pilar-body {
+      font-size: 14px;
+      color: var(--blanco-70);
+      line-height: 1.7;
+    }
+
+    .pilar-icon {
+      position: absolute;
+      top: 36px;
+      right: 36px;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--gris-borde);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .pilar.active .pilar-icon {
+      opacity: 1;
+      border-color: var(--naranja);
+    }
+
+    .pilar-icon::after {
+      content: '→';
+      color: var(--naranja);
+      font-size: 14px;
+    }
+
+    /* ─── TECNOLOGÍA ───────────────────────────────────────── */
+    .tecnologia {
+      background: var(--negro);
+      padding: 100px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .tech-features {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .tech-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--gris-borde);
+    }
+
+    .tech-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .tech-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--gris-borde);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .tech-item-title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .tech-item-body {
+      font-size: 13px;
+      color: var(--blanco-70);
+      line-height: 1.6;
+    }
+
+    /* ─── PROGRAMAS ────────────────────────────────────────── */
+    .programas {
+      background: var(--negro);
+      padding: 100px 48px;
+    }
+
+    .programas-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .programas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .programa {
+      background: var(--gris-oscuro);
+      padding: 48px 36px;
+      border: 1px solid transparent;
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.3s ease,
+                  border-color 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* franja naranja lateral izquierda */
+    .programa::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--naranja);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.35s ease;
+    }
+
+    .programa:hover {
+      transform: scale(1.04) translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(232,77,0,0.1);
+      border-color: var(--gris-borde);
+    }
+
+    .programa:hover::before {
+      transform: scaleY(1);
+    }
+
+    .programa-tag {
+      font-family: var(--display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--naranja);
+      margin-bottom: 20px;
+    }
+
+    .programa-nombre {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 40px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .programa-desc {
+      font-size: 13px;
+      color: var(--blanco-70);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .programa-meta {
+      border-top: 1px solid var(--gris-borde);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .programa-meta-item {
+      font-family: var(--display);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--blanco-30);
+    }
+
+    .programa-meta-item span {
+      color: var(--blanco-70);
+    }
+
+    .programa-cta {
+      margin-top: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--naranja);
+      border-bottom: 1px solid var(--naranja);
+      padding-bottom: 2px;
+      transition: gap 0.2s;
+    }
+
+    .programa:hover .programa-cta { gap: 14px; }
+
+    /* ─── CIRCUITOS ────────────────────────────────────────── */
+    .circuitos {
+      background: var(--gris-oscuro);
+      padding: 100px 48px;
+    }
+
+    .circuitos-header {
+      margin-bottom: 64px;
+    }
+
+    /* carrusel horizontal */
+    .circuitos-slider {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .circuito {
+      background: var(--gris-medio);
+      border: 1px solid var(--gris-borde);
+      padding: 40px 32px;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .circuito.featured {
+      border-color: var(--naranja);
+    }
+
+    .circuito-num {
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--blanco-30);
+      margin-bottom: 32px;
+    }
+
+    /* SVG track outline — estilizado */
+    .track-svg {
+      width: 100%;
+      height: 120px;
+      margin-bottom: 32px;
+    }
+
+    .track-svg path {
+      fill: none;
+      stroke: var(--gris-borde);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 0.3s;
+    }
+
+    .circuito.featured .track-svg path {
+      stroke: var(--naranja);
+    }
+
+    .circuito-nombre {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .circuito-pais {
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--naranja);
+      margin-bottom: 16px;
+    }
+
+    .circuito-desc {
+      font-size: 13px;
+      color: var(--blanco-70);
+      line-height: 1.7;
+    }
+
+    .circuito-link {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blanco-30);
+      transition: color 0.2s, gap 0.2s;
+    }
+
+    .circuito.featured .circuito-link { color: var(--naranja); }
+    .circuito:hover .circuito-link { color: var(--naranja); gap: 14px; }
+
+    /* ─── CTA FINAL ────────────────────────────────────────── */
+    .cta-final {
+      background: var(--negro);
+      padding: 120px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--gris-borde);
+    }
+
+    .cta-final-text .section-title { max-width: 520px; }
+
+    .cta-final-action {
+      flex-shrink: 0;
+    }
+
+    .btn-large {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--naranja);
+      color: var(--blanco);
+      padding: 20px 44px;
+      display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-large:hover {
+      background: var(--naranja-claro);
+      transform: translateY(-3px);
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────────── */
+    .footer {
+      background: var(--gris-oscuro);
+      border-top: 1px solid var(--gris-borde);
+      padding: 64px 48px 40px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+
+    .footer-brand-name {
+      font-family: var(--display);
+      font-weight: 900;
+      font-size: 28px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .footer-brand-desc {
+      font-size: 13px;
+      color: var(--blanco-30);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-col-title {
+      font-family: var(--display);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--blanco-30);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--blanco-70);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--naranja); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--gris-borde);
+      padding-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--blanco-30);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--gris-borde);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--blanco-30);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .footer-social a:hover {
+      border-color: var(--naranja);
+      color: var(--naranja);
+    }
+
+    /* ─── DECORACIÓN DIAGONAL (rayas velocidad) ────────────── */
+    .speed-stripe {
+      height: 8px;
+      background: repeating-linear-gradient(
+        -60deg,
+        var(--naranja) 0px,
+        var(--naranja) 10px,
+        transparent 10px,
+        transparent 20px
+      );
+      opacity: 0.6;
+    }
+
+    /* ─── RESPONSIVE MOBILE ────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav { padding: 0 20px; }
+      .nav-links { display: none; }
+
+      .hero { padding: 0 20px 60px; }
+      .hero-badge { display: none; }
+
+      .sponsors {
+        padding: 20px;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .sponsors-logos { gap: 24px; }
+      .sponsor-name { font-size: 18px; }
+
+      .about {
+        grid-template-columns: 1fr;
+        padding: 64px 20px;
+      }
+      .about-text { padding-right: 0; margin-bottom: 40px; }
+      .about-image::before { display: none; }
+      .about-image img { height: 280px; }
+      .stats { gap: 24px; }
+
+      .pilares { padding: 64px 20px; }
+      .pilares-grid {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+      .pilar.active { transform: scale(1); }
+
+      .tecnologia {
+        grid-template-columns: 1fr;
+        padding: 64px 20px;
+        gap: 48px;
+      }
+
+      .programas { padding: 64px 20px; }
+      .programas-grid { grid-template-columns: 1fr; }
+      .programa:hover { transform: none; }
+
+      .circuitos { padding: 64px 20px; }
+      .circuitos-slider { grid-template-columns: 1fr; }
+
+      .cta-final {
+        flex-direction: column;
+        gap: 48px;
+        padding: 80px 20px;
+        text-align: center;
+      }
+
+      .footer { padding: 48px 20px 32px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+
+    @media (max-width: 480px) {
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">APEX</a>
+    <ul class="nav-links">
+      <li><a href="#programas">Cursos</a></li>
+      <li><a href="#pilares">Telemetría</a></li>
+      <li><a href="#circuitos">Simuladores</a></li>
+    </ul>
+    <a href="#registro" class="nav-cta">Registrate</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <p class="hero-tag">Sim Racing Academy</p>
+    <h1 class="hero-headline"><em>Entrená</em> como<br>un piloto real</h1>
+    <p class="hero-sub">La simulación ya no es un juego. Formamos pilotos virtuales mediante telemetría, análisis de datos y entrenamiento competitivo para llevar tu rendimiento al siguiente nivel.</p>
+    <div class="hero-actions">
+      <a href="#programas" class="btn-primary">Ver programas</a>
+      <a href="#pilares" class="btn-ghost">Cómo funciona →</a>
+    </div>
+    <span class="hero-badge">SIM RACING</span>
+  </section>
+
+  <!-- SPONSORS -->
+  <div class="sponsors">
+    <span class="sponsors-label">Partners</span>
+    <div class="sponsors-logos">
+      <span class="sponsor-name">VISA</span>
+      <span class="sponsor-name heineken">★ Heineken</span>
+      <span class="sponsor-name santander">Santander</span>
+      <span class="sponsor-name shell">Shell</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-text">
+      <p class="section-eyebrow">Sobre APEX</p>
+      <h2 class="section-title">De la pantalla<br>a la pista</h2>
+      <p class="about-body">En 2026 la diferencia entre el automovilismo virtual y el real es cada vez más pequeña. Equipos profesionales utilizan simuladores para entrenar pilotos, desarrollar estrategias y analizar datos.<br><br>Apex nace para formar profesionales capaces de interpretar telemetría, optimizar cada vuelta y transformar información en rendimiento.</p>
+      <div class="stats">
+        <div>
+          <div class="stat-num">+120</div>
+          <div class="stat-label">Horas de<br>simulación</div>
+        </div>
+        <div>
+          <div class="stat-num">+3100</div>
+          <div class="stat-label">Alumnos<br>entrenados</div>
+        </div>
+        <div>
+          <div class="stat-num">+500</div>
+          <div class="stat-label">Programas<br>para todos</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-image">
+      <img src="apex-sala.png" alt="Sala de simuladores APEX" />
+    </div>
+  </section>
+
+  <div class="speed-stripe"></div>
+
+  <!-- TRES PILARES -->
+  <section class="pilares" id="pilares">
+    <div class="pilares-header">
+      <p class="section-eyebrow">Formate</p>
+      <h2 class="section-title">Los tres pilares</h2>
+    </div>
+    <div class="pilares-grid">
+
+      <div class="pilar active" onclick="activarPilar(this)">
+        <div class="pilar-num">01.</div>
+        <h3 class="pilar-title">Iniciación</h3>
+        <p class="pilar-body">Fundamentos de conducción, configuración del simulador, trazadas ideales y primeros análisis de rendimiento.</p>
+        <div class="pilar-icon"></div>
+      </div>
+
+      <div class="pilar" onclick="activarPilar(this)">
+        <div class="pilar-num">02.</div>
+        <h3 class="pilar-title">Telemetría</h3>
+        <p class="pilar-body">Interpretación de datos, comparación de vueltas, frenadas, aceleración y optimización del tiempo por sector.</p>
+        <div class="pilar-icon"></div>
+      </div>
+
+      <div class="pilar" onclick="activarPilar(this)">
+        <div class="pilar-num">03.</div>
+        <h3 class="pilar-title">Competición</h3>
+        <p class="pilar-body">Estrategia de carrera, gestión de neumáticos, adelantamientos, consistencia y preparación para campeonatos.</p>
+        <div class="pilar-icon"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TECNOLOGÍA -->
+  <section class="tecnologia" id="tecnologia">
+    <div class="about-text">
+      <p class="section-eyebrow">Tecnología</p>
+      <h2 class="section-title">Tecnología<br>de élite</h2>
+      <p class="about-body">Contamos con simuladores de última generación, equipamientos de alto rendimiento y software profesional para ofrecerte la experiencia más realista y precisa.</p>
+    </div>
+    <div class="tech-features">
+      <div class="tech-item">
+        <div class="tech-icon">🎮</div>
+        <div>
+          <div class="tech-item-title">Simuladores de alta fidelidad</div>
+          <p class="tech-item-body">Plataformas de movimiento profesional con feedback háptico de nivel competitivo.</p>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">⚙️</div>
+        <div>
+          <div class="tech-item-title">Hardware de competición</div>
+          <p class="tech-item-body">Volantes, pedales y asientos homologados usados por equipos reales de motorsport.</p>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">📊</div>
+        <div>
+          <div class="tech-item-title">Análisis de datos profesional</div>
+          <p class="tech-item-body">Software de telemetría que los ingenieros de F1 usan para interpretar cada vuelta.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMAS -->
+  <section class="programas" id="programas">
+    <div class="programas-header">
+      <p class="section-eyebrow" style="justify-content:center;">Programas de entrenamiento</p>
+      <h2 class="section-title">Elegí tu nivel</h2>
+    </div>
+    <div class="programas-grid">
+
+      <div class="programa">
+        <div class="programa-tag">Programa</div>
+        <div class="programa-nombre">Rookie</div>
+        <p class="programa-desc">Ideal para quienes quieren dar sus primeros pasos en la simulación competitiva.</p>
+        <div class="programa-meta">
+          <div class="programa-meta-item">Duración: <span>4 semanas</span></div>
+          <div class="programa-meta-item">Clases: <span>3 por semana</span></div>
+          <div class="programa-meta-item">Enfoque: <span>Conducción y técnica</span></div>
+        </div>
+        <a href="#" class="programa-cta">Ver más →</a>
+      </div>
+
+      <div class="programa">
+        <div class="programa-tag">Programa</div>
+        <div class="programa-nombre">Performance</div>
+        <p class="programa-desc">Orientado al análisis de datos y mejora constante mediante telemetría avanzada.</p>
+        <div class="programa-meta">
+          <div class="programa-meta-item">Duración: <span>6 semanas</span></div>
+          <div class="programa-meta-item">Clases: <span>5 por semana</span></div>
+          <div class="programa-meta-item">Enfoque: <span>Telemetría y optimización</span></div>
+        </div>
+        <a href="#" class="programa-cta">Ver más →</a>
+      </div>
+
+      <div class="programa">
+        <div class="programa-tag">Programa</div>
+        <div class="programa-nombre">Advanced</div>
+        <p class="programa-desc">Preparación avanzada para competencia al más alto nivel de simulación.</p>
+        <div class="programa-meta">
+          <div class="programa-meta-item">Duración: <span>El semestre</span></div>
+          <div class="programa-meta-item">Clases: <span>Diarias + coaching</span></div>
+          <div class="programa-meta-item">Enfoque: <span>Competencia y estrategia</span></div>
+        </div>
+        <a href="#" class="programa-cta">Ver más →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="speed-stripe"></div>
+
+  <!-- CIRCUITOS -->
+  <section class="circuitos" id="circuitos">
+    <div class="circuitos-header">
+      <p class="section-eyebrow">Circuitos</p>
+      <h2 class="section-title">Entrená en los<br>circuitos más importantes</h2>
+    </div>
+    <div class="circuitos-slider">
+
+      <div class="circuito">
+        <div class="circuito-num">01 / CIRCUITO</div>
+        <!-- Lusail - trazado simplificado SVG -->
+        <svg class="track-svg" viewBox="0 0 200 120">
+          <path d="M20,90 Q20,30 80,20 Q140,10 160,40 Q180,65 150,85 Q120,105 80,100 Q50,96 20,90 Z"/>
+        </svg>
+        <div class="circuito-nombre">Lusail</div>
+        <div class="circuito-pais">Qatar</div>
+        <p class="circuito-desc">Un circuito de alta velocidad donde la constancia en las curvas rápidas y el frenado son fundamentales.</p>
+        <a href="#" class="circuito-link">Ver más →</a>
+      </div>
+
+      <div class="circuito featured">
+        <div class="circuito-num">02 / CIRCUITO</div>
+        <!-- Melbourne - Albert Park simplificado -->
+        <svg class="track-svg" viewBox="0 0 200 120">
+          <path d="M30,100 L30,70 Q30,20 70,15 L130,15 Q170,15 175,50 L175,70 Q175,90 155,95 L100,105 Q60,112 30,100 Z"/>
+        </svg>
+        <div class="circuito-nombre">Melbourne</div>
+        <div class="circuito-pais">Australia</div>
+        <p class="circuito-desc">Circuito técnico y desafiante donde la precisión y la constancia marcan la diferencia vuelta a vuelta.</p>
+        <a href="#" class="circuito-link">Ver más →</a>
+      </div>
+
+      <div class="circuito">
+        <div class="circuito-num">03 / CIRCUITO</div>
+        <!-- Shanghai - simplificado -->
+        <svg class="track-svg" viewBox="0 0 200 120">
+          <path d="M20,60 Q20,20 60,15 Q100,10 120,30 L145,55 Q165,75 165,90 Q165,110 130,110 L70,105 Q40,100 20,80 Z"/>
+        </svg>
+        <div class="circuito-nombre">Shanghai</div>
+        <div class="circuito-pais">China</div>
+        <p class="circuito-desc">Condiciones donde el temple de la velocidad y el equilibrio en curvas marcan el rendimiento en pista.</p>
+        <a href="#" class="circuito-link">Ver más →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final" id="registro">
+    <div class="cta-final-text">
+      <p class="section-eyebrow">¿Listo para dar el siguiente paso?</p>
+      <h2 class="section-title">Abrí tu cuenta y<br>empezá a entrenar</h2>
+    </div>
+    <div class="cta-final-action">
+      <a href="#" class="btn-large">Registrate ya</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">APEX</div>
+        <p class="footer-brand-desc">Abrí una cuenta y accedé a ella en cualquier momento y en cualquier lugar.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Personal</div>
+        <ul class="footer-links">
+          <li><a href="#">Descripción</a></li>
+          <li><a href="#">Cuenta</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Tarifas</a></li>
+          <li><a href="#">Ayuda</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">General</div>
+        <ul class="footer-links">
+          <li><a href="#">Acerca de APEX</a></li>
+          <li><a href="#">Priorización</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contacto</a></li>
+          <li><a href="#">Preguntas</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legales</div>
+        <ul class="footer-links">
+          <li><a href="#">Términos</a></li>
+          <li><a href="#">Condiciones</a></li>
+          <li><a href="#">Cookies</a></li>
+          <li><a href="#">Privacidad</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Apex Sim Racing Academy. Todos los derechos reservados.</p>
+      <div class="footer-social">
+        <a href="#">𝕏</a>
+        <a href="#">▶</a>
+        <a href="#">◉</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ─── PILARES: activar al click ───────────────────────────
+    function activarPilar(el) {
+      document.querySelectorAll('.pilar').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
